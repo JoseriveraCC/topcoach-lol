@@ -91,3 +91,4 @@ TopCoach LoL no está respaldado por Riot Games y no refleja las opiniones de Ri
 ## Licencia
 
 Pendiente de decisión. El repositorio se mantiene académico y privado hasta definir las condiciones de distribución.
+# topcoach-lol
