@@ -1,0 +1,35 @@
+recommendations:
+  practice.farming.basics:
+    title: Fundamentos de farmeo
+    allowed_actions:
+      - Practicar last hit en herramienta de práctica.
+      - Revisar pérdidas de súbditos alrededor de recalls y rotaciones.
+  practice.early_survival:
+    title: Supervivencia temprana
+    allowed_actions:
+      - Revisar cada muerte anterior al minuto 15 en el timeline o replay.
+      - Registrar estado de oleada e información disponible del jungla.
+  practice.decision_quality:
+    title: Calidad de decisiones
+    allowed_actions:
+      - Revisar muertes evitables y su costo en recursos u objetivos.
+  practice.combat_efficiency:
+    title: Eficiencia en combate
+    allowed_actions:
+      - Comparar peleas tomadas con y sin ventaja observable.
+  practice.resource_conversion:
+    title: Conversión de recursos
+    allowed_actions:
+      - Revisar ventanas seguras de farmeo, placas y oleadas laterales.
+  practice.vision_review:
+    title: Revisión de visión
+    allowed_actions:
+      - Revisar cuándo y dónde se colocaron wards, sin inferir calidad solo por cantidad.
+  practice.objective_review:
+    title: Revisión de objetivos
+    allowed_actions:
+      - Revisar preparación de oleada y presencia antes de objetivos.
+  practice.consistency:
+    title: Consistencia
+    allowed_actions:
+      - Definir una meta mínima repetible para el siguiente bloque.

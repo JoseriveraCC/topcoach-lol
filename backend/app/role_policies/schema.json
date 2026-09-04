@@ -1,0 +1,320 @@
+{
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "match_detail",
+            "timeline",
+            "derived",
+            "history"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "required_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Fields",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "required_fields"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "PackMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "TOP",
+            "JUNGLE",
+            "MIDDLE",
+            "BOTTOM",
+            "UTILITY"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "queue_ids": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Queue Ids",
+          "type": "array"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "patch_range": {
+          "$ref": "#/$defs/PatchRange"
+        },
+        "status": {
+          "enum": [
+            "experimental",
+            "validated",
+            "deprecated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "author": {
+          "title": "Author",
+          "type": "string"
+        },
+        "provenance": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Provenance",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "role",
+        "queue_ids",
+        "version",
+        "schema_version",
+        "patch_range",
+        "status",
+        "author",
+        "provenance"
+      ],
+      "title": "PackMetadata",
+      "type": "object"
+    },
+    "PatchRange": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "title": "From",
+          "type": "string"
+        },
+        "to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "To"
+        }
+      },
+      "required": [
+        "from"
+      ],
+      "title": "PatchRange",
+      "type": "object"
+    },
+    "Rule": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "strategy": {
+          "enum": [
+            "threshold",
+            "relative",
+            "descriptive"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "aggregation": {
+          "title": "Aggregation",
+          "type": "string"
+        },
+        "sample_size": {
+          "minimum": 1,
+          "title": "Sample Size",
+          "type": "integer"
+        },
+        "conditions": {
+          "items": {
+            "$ref": "#/$defs/RuleCondition"
+          },
+          "title": "Conditions",
+          "type": "array"
+        },
+        "comparison_reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comparison Reference"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "recommendation_id": {
+          "title": "Recommendation Id",
+          "type": "string"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "metric",
+        "strategy",
+        "aggregation",
+        "sample_size",
+        "evidence",
+        "recommendation_id",
+        "rationale"
+      ],
+      "title": "Rule",
+      "type": "object"
+    },
+    "RuleCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "operator": {
+          "enum": [
+            "lt",
+            "lte",
+            "gt",
+            "gte",
+            "eq",
+            "range"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "good",
+            "warning",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "min_inclusive": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Inclusive"
+        },
+        "min_exclusive": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Exclusive"
+        },
+        "max_inclusive": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Inclusive"
+        },
+        "max_exclusive": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Exclusive"
+        }
+      },
+      "required": [
+        "operator",
+        "severity"
+      ],
+      "title": "RuleCondition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "pack": {
+      "$ref": "#/$defs/PackMetadata"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/Rule"
+      },
+      "title": "Rules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "pack",
+    "rules"
+  ],
+  "title": "RulePack",
+  "type": "object"
+}

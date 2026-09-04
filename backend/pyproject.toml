@@ -1,0 +1,17 @@
+[project]
+name = "topcoach-api"
+version = "0.1.0"
+description = "Backend del MVP TopCoach LoL"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = [
+  "ignore:Using `httpx` with `starlette.testclient` is deprecated:Warning",
+  "ignore:The anyio.abc.BlockingPortal alias is deprecated:Warning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

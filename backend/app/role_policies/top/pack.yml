@@ -1,0 +1,142 @@
+pack:
+  id: top-ranked-v1
+  role: TOP
+  queue_ids: [420]
+  version: 1.0.0
+  schema_version: 1.0.0
+  patch_range:
+    from: configurable
+    to: null
+  status: experimental
+  author: José Rivera
+  provenance:
+    - Heurísticas iniciales propuestas por el autor.
+    - Pendientes de pruebas piloto y revisión por jugadores experimentados.
+    - No deben presentarse como verdades universales ni como relaciones causales.
+
+rules:
+  - id: top.cs_per_minute.block_mean
+    metric: cs_per_minute
+    strategy: threshold
+    aggregation: mean_over_valid_block
+    sample_size: 10
+    conditions:
+      - {operator: lt, value: 6.5, severity: critical}
+      - {operator: range, min_inclusive: 6.5, max_exclusive: 8.0, severity: warning}
+      - {operator: gte, value: 8.0, severity: good}
+    evidence:
+      source: derived
+      required_fields: [total_minions_killed, neutral_minions_killed, game_duration_seconds]
+      limitations:
+        - Un CS/min bajo no demuestra por sí solo una mala gestión de oleadas.
+    recommendation_id: practice.farming.basics
+    rationale: Mide la eficiencia observable de obtención de súbditos durante la partida.
+
+  - id: top.deaths_pre_15.per_match
+    metric: deaths_pre_15
+    strategy: threshold
+    aggregation: classify_each_match_then_summarize
+    sample_size: 10
+    conditions:
+      - {operator: lte, value: 1, severity: good}
+      - {operator: eq, value: 2, severity: warning}
+      - {operator: gte, value: 3, severity: critical}
+    evidence:
+      source: timeline
+      required_fields: [CHAMPION_KILL.timestamp, victimId, participantId]
+      limitations:
+        - La cantidad de muertes no identifica automáticamente la causa táctica.
+    recommendation_id: practice.early_survival
+    rationale: Señala riesgo observable durante la fase temprana sin atribuir causalidad.
+
+  - id: top.average_deaths.block_mean
+    metric: average_deaths
+    strategy: threshold
+    aggregation: mean_over_valid_block
+    sample_size: 10
+    conditions:
+      - {operator: lte, value: 4, severity: good}
+      - {operator: range, min_exclusive: 4, max_inclusive: 6, severity: warning}
+      - {operator: gt, value: 6, severity: critical}
+    evidence:
+      source: match_detail
+      required_fields: [deaths]
+      limitations:
+        - Debe interpretarse junto con duración, rol y contexto del bloque.
+    recommendation_id: practice.decision_quality
+    rationale: Resume supervivencia y exposición al riesgo en el bloque.
+
+  - id: top.kda.own_history
+    metric: kda
+    strategy: relative
+    aggregation: mean_over_valid_block
+    sample_size: 10
+    conditions: []
+    comparison_reference: previous_valid_block_and_own_history
+    evidence:
+      source: history
+      required_fields: [kills, deaths, assists, previous_evaluation]
+      limitations:
+        - KDA no representa por sí solo impacto macro ni calidad de decisiones.
+    recommendation_id: practice.combat_efficiency
+    rationale: Compara eficiencia de combate contra el historial del mismo jugador.
+
+  - id: top.gold_per_minute.own_history
+    metric: gold_per_minute
+    strategy: relative
+    aggregation: mean_over_valid_block
+    sample_size: 10
+    conditions: []
+    comparison_reference: previous_valid_block_and_own_history
+    evidence:
+      source: derived
+      required_fields: [gold_earned, game_duration_seconds, previous_evaluation]
+      limitations:
+        - El oro debe contextualizarse por duración, campeón y resultado.
+    recommendation_id: practice.resource_conversion
+    rationale: Observa la evolución económica del jugador sin usar cohortes no validadas.
+
+  - id: top.vision.descriptive
+    metric: vision
+    strategy: descriptive
+    aggregation: block_summary
+    sample_size: 10
+    conditions: []
+    comparison_reference: null
+    evidence:
+      source: match_detail
+      required_fields: [vision_score, wards_placed, wards_killed, detector_wards_placed]
+      limitations:
+        - El resumen general no demuestra si cada ward fue colocado correctamente.
+    recommendation_id: practice.vision_review
+    rationale: Presenta señales de visión observables sin calificar su calidad táctica.
+
+  - id: top.objectives.descriptive
+    metric: objective_participation
+    strategy: descriptive
+    aggregation: block_summary
+    sample_size: 10
+    conditions: []
+    comparison_reference: null
+    evidence:
+      source: timeline
+      required_fields: [ELITE_MONSTER_KILL, BUILDING_KILL, participant_frames]
+      limitations:
+        - La cercanía o participación debe definirse mediante una regla espacial/temporal explícita.
+    recommendation_id: practice.objective_review
+    rationale: Resume eventos macro verificables sin afirmar que una rotación fue correcta.
+
+  - id: top.consistency.own_history
+    metric: consistency
+    strategy: relative
+    aggregation: coefficient_of_variation
+    sample_size: 10
+    conditions: []
+    comparison_reference: previous_valid_block
+    evidence:
+      source: derived
+      required_fields: [per_match_metrics, previous_evaluation]
+      limitations:
+        - No debe calcularse sobre una métrica cuya media sea cero o casi cero.
+    recommendation_id: practice.consistency
+    rationale: Compara variabilidad entre bloques sin convertirla en causalidad.
