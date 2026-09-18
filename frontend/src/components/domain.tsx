@@ -52,7 +52,7 @@ export function PriorityCard({ priority, index }: { priority: EvaluationPriority
   );
 }
 
-export function EvaluationCard({ item }: { item: EvaluationHistoryItem }) {
+export function EvaluationCard({ item, detailHref }: { item: EvaluationHistoryItem; detailHref?: string }) {
   return (
     <Panel className="evaluation-card">
       <div className="card-heading">
@@ -62,7 +62,11 @@ export function EvaluationCard({ item }: { item: EvaluationHistoryItem }) {
       <h3>{item.primaryFocus}</h3>
       <p>{item.dateRange}</p>
       <ProgressBar value={item.score} max={100} label="Puntuación de consistencia" />
-      <a className="card-link" href={`#/evaluacion/${item.id}`}>Ver evaluación</a>
+      {detailHref ? (
+        <a className="card-link" href={detailHref} aria-label={`Abrir evaluación ${item.id}`}>Ver evaluación</a>
+      ) : (
+        <span className="card-disabled">Detalle no incluido en la demo</span>
+      )}
     </Panel>
   );
 }

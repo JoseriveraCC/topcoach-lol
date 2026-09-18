@@ -239,3 +239,78 @@ h1, h2, h3 { font-family: Rajdhani, "Arial Narrow", sans-serif; }
   .evidence-list li { grid-template-columns: 1fr; }
   .evidence-list li > strong, .evidence-list li > small { grid-column: 1; }
 }
+
+.plan-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 1rem; margin-bottom: 1.5rem; }
+.plan-summary h2, .plan-note h2 { margin: .75rem 0; }
+.plan-target, .plan-note p { color: var(--color-muted); font-size: .7rem; line-height: 1.7; }
+.plan-target strong { color: var(--color-text); }
+.plan-summary .progress-wrap { margin-top: 1.25rem; }
+.plan-completed { display: block; margin-top: .75rem; color: var(--color-action); font: 700 1.25rem Rajdhani, "Arial Narrow", sans-serif; }
+.training-list, .history-list { display: grid; gap: .8rem; }
+.training-goal { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+.training-goal input { width: 1.1rem; height: 1.1rem; accent-color: var(--color-action); }
+.history-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.history-comparison { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; }
+.history-comparison h2 { margin: .35rem 0; }
+.history-comparison p:not(.eyebrow), .history-empty > p { color: var(--color-muted); font-size: .7rem; line-height: 1.7; }
+.history-comparison > strong { flex: 0 0 auto; color: var(--color-action); font: 700 clamp(1.8rem, 4vw, 3rem) Rajdhani, "Arial Narrow", sans-serif; }
+.history-comparison > strong span { color: var(--color-accent); }
+.history-card { display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: center; border-top: 1px solid var(--color-line); padding: 1rem 0; }
+.evaluation-card { display: flex; min-width: 0; flex-direction: column; }
+.evaluation-card .card-link, .evaluation-card .card-disabled { margin-top: auto; padding-top: .75rem; }
+.card-disabled { color: var(--color-muted); font-size: .65rem; }
+.history-empty { max-width: 680px; margin: 4rem auto; text-align: center; }
+.history-empty h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.history-empty .button { margin-top: 1rem; }
+.history-empty-toggle { font-size: .65rem; }
+.style-guide { width: min(1180px, 100%); margin-inline: auto; }
+.guide-header { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; border-bottom: 1px solid var(--color-line); padding-bottom: 1rem; }
+.guide-header h1 { margin: .3rem 0; font-size: clamp(2.2rem, 5vw, 4rem); line-height: .95; }
+.guide-header > div > p:last-child, .guide-copy { max-width: 720px; color: var(--color-muted); font-size: .68rem; line-height: 1.7; }
+.guide-section { margin-top: 1rem; }
+.guide-section > .panel { height: 100%; }
+.guide-section h2 { margin: .35rem 0 1rem; }
+.swatch-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: .75rem; }
+.swatch { min-width: 0; overflow: hidden; border: 1px solid var(--color-line); background: var(--color-surface); }
+.swatch__color { height: 4.5rem; }
+.swatch__meta { padding: .7rem; color: var(--color-muted); font-size: .62rem; }
+.swatch__meta strong, .swatch__meta span, .swatch__meta small { display: block; overflow-wrap: anywhere; }
+.swatch__meta strong { color: var(--color-text); }
+.swatch__meta span { margin: .3rem 0; color: var(--color-action); }
+.capture-frame { min-height: min(760px, calc(100vh - 3rem)); }
+.guide-components { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.guide-section--wide { grid-column: 1 / -1; }
+.guide-row { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.guide-section .progress-wrap { margin-top: 1.25rem; }
+.type-samples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.type-samples > div { border-left: 2px solid var(--color-line); padding-left: .75rem; }
+.type-samples span { display: block; margin-top: .35rem; color: var(--color-muted); font-size: .6rem; }
+.type-sample-title { font: 700 1.8rem Rajdhani, "Arial Narrow", sans-serif; }
+.type-sample-body { font: 500 .85rem "IBM Plex Mono", Consolas, monospace; }
+.guide-metrics { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--color-line); }
+
+@media (max-width: 1000px) {
+  .history-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 850px) {
+  .plan-grid { grid-template-columns: 1fr; }
+  .swatch-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .history-card { grid-template-columns: 1fr; }
+  .history-comparison, .guide-header { align-items: flex-start; flex-direction: column; }
+  .swatch-grid { grid-template-columns: repeat(2, 1fr); }
+  .guide-components { grid-template-columns: 1fr; }
+  .guide-section--wide { grid-column: auto; }
+  .guide-row { align-items: stretch; flex-direction: column; }
+  .type-samples { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .app-sidebar, .app-mobile-nav { display: none !important; }
+  .app-shell { display: block; }
+  .app-content { padding: 0; }
+  .style-guide { color: #f2f7f8; background: #050b0f; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
