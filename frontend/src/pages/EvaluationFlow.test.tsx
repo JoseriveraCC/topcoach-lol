@@ -54,4 +54,12 @@ describe("evaluation flow", () => {
     expect(screen.getByRole("tab", { name: "Debilidades" })).toHaveFocus();
     expect(screen.getByRole("tab", { name: "Debilidades" })).toHaveAttribute("aria-selected", "true");
   });
+
+  it("renders summary values consistent with the ten-match evidence", async () => {
+    render(<ReportPage />);
+    expect(screen.getByText("60%")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("tab", { name: "Debilidades" }));
+    expect(screen.getByText("1.4 por partida")).toBeInTheDocument();
+  });
 });

@@ -17,4 +17,13 @@ describe("prototype demo data", () => {
       priority.observedValue && priority.reference && priority.goal
     )).toBe(true);
   });
+
+  it("keeps aggregate evaluation evidence consistent with the match block", () => {
+    const wins = demoMatches.filter((match) => match.result === "Victoria").length;
+    const earlyDeaths = demoMatches.reduce((total, match) => total + match.earlyDeaths, 0);
+    const earlyDeathPriority = demoEvaluation.priorities.find((priority) => priority.id === "early-deaths");
+
+    expect(demoEvaluation.winRate).toBe((wins / demoMatches.length) * 100);
+    expect(earlyDeathPriority?.observedValue).toBe(`${(earlyDeaths / demoMatches.length).toFixed(1)} por partida`);
+  });
 });

@@ -34,7 +34,7 @@ export const demoEvaluation: EvaluationSummary = {
   dateRange: "12–16 Sep 2026",
   consistencyScore: 74,
   averageKda: 4.2,
-  winRate: 62,
+  winRate: 60,
   csPerMinute: 7.4,
   newMatchesRequiredForReevaluation: 10,
   priorities: [
@@ -42,7 +42,7 @@ export const demoEvaluation: EvaluationSummary = {
       id: "early-deaths",
       title: "Reducir muertes antes del minuto 15",
       severity: "Crítico",
-      observedValue: "1.8 por partida",
+      observedValue: "1.4 por partida",
       reference: "≤ 1.0 por partida",
       explanation: "La frecuencia observada sugiere revisar la toma de riesgos sin visión durante la fase de líneas.",
       limitation: "Los datos no permiten afirmar la causa táctica exacta sin revisar la partida.",
