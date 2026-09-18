@@ -29,3 +29,6 @@ Thumbs.db
 *.log
 demo-data/*.json
 !demo-data/README.md
+
+# Local visual brainstorming artifacts
+.superpowers/
