@@ -12,18 +12,16 @@ const copy = {
 export function AuthPage({ mode }: { mode: AuthMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({ email: false, password: false });
   const [heading, submitLabel] = copy[mode];
   const needsPassword = mode !== "recover";
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!email.trim() || (needsPassword && !password.trim())) {
-      setError("Completá los campos obligatorios para continuar.");
-      return;
-    }
+    const nextErrors = { email: !email.trim(), password: needsPassword && !password.trim() };
+    setErrors(nextErrors);
+    if (nextErrors.email || nextErrors.password) return;
 
-    setError("");
     const nextRoute = mode === "register" ? "#/vincular" : mode === "login" ? "#/dashboard" : "#/login";
     window.location.hash = nextRoute;
   };
@@ -36,9 +34,8 @@ export function AuthPage({ mode }: { mode: AuthMode }) {
         <h1>{heading}</h1>
         <p className="auth-intro">Usá cualquier dato no vacío para recorrer el prototipo.</p>
         <form onSubmit={submit} noValidate>
-          <label className="field">Correo electrónico<input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} aria-invalid={Boolean(error)} /></label>
-          {needsPassword && <label className="field">Contraseña<input type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} value={password} onChange={(event) => setPassword(event.target.value)} aria-invalid={Boolean(error)} /></label>}
-          {error && <p className="field-error" role="alert">{error}</p>}
+          <div className="field"><label htmlFor="auth-email">Correo electrónico</label><input id="auth-email" type="email" autoComplete="email" value={email} onChange={(event) => { setEmail(event.target.value); setErrors((current) => ({ ...current, email: false })); }} aria-invalid={errors.email || undefined} aria-describedby={errors.email ? "auth-email-error" : undefined} />{errors.email && <p className="field-error" id="auth-email-error" role="alert">Ingresá tu correo electrónico.</p>}</div>
+          {needsPassword && <div className="field"><label htmlFor="auth-password">Contraseña</label><input id="auth-password" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} value={password} onChange={(event) => { setPassword(event.target.value); setErrors((current) => ({ ...current, password: false })); }} aria-invalid={errors.password || undefined} aria-describedby={errors.password ? "auth-password-error" : undefined} />{errors.password && <p className="field-error" id="auth-password-error" role="alert">Ingresá tu contraseña.</p>}</div>}
           <Button type="submit">{submitLabel}</Button>
         </form>
         <div className="auth-links">
