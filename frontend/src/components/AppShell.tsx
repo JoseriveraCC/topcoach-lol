@@ -47,7 +47,14 @@ export function AppShell({ children, activeRoute }: { children: ReactNode; activ
         <header className="app-mobile-nav">
           <div className="app-mobile-nav__top">
             <Brand />
-            <StatusBadge tone="neutral"><span>Datos</span> <span>demostrativos</span></StatusBadge>
+          </div>
+          <div className="app-mobile-disclosure">
+            <div className="app-mobile-profile">
+              <StatusBadge tone="neutral">Datos demostrativos</StatusBadge>
+              <strong>{demoUser.summonerName} #{demoUser.tagLine}</strong>
+              <span>{demoUser.region} · {demoUser.rank}</span>
+            </div>
+            <p>TopCoach LoL no está respaldado por Riot Games y no refleja sus opiniones.</p>
           </div>
           <nav className="app-mobile-nav__links" aria-label="Navegación principal móvil">
             <NavigationLinks activeRoute={activeRoute} />
