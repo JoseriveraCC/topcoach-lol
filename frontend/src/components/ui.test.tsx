@@ -102,16 +102,21 @@ describe("UI primitives", () => {
     expect(panelRule?.style.background).toBe("linear-gradient(145deg, var(--color-surface-raised), var(--color-surface))");
   });
 
-  it("keeps a visible focus indicator on clipped buttons", async () => {
-    render(<Button>Continuar</Button>);
+  it("keeps contrasting focus indicators inside clipped buttons", async () => {
+    render(<><Button>Continuar</Button><Button variant="secondary">Volver</Button></>);
 
     await userEvent.tab();
     const button = screen.getByRole("button", { name: "Continuar" });
     const rules = Array.from(document.styleSheets).flatMap((sheet) => Array.from(sheet.cssRules));
-    const focusRule = rules.find((rule) => (rule as CSSStyleRule).selectorText === ".button--primary:focus-visible, .button--secondary:focus-visible") as CSSStyleRule | undefined;
+    const primaryFocusRule = rules.find((rule) => (rule as CSSStyleRule).selectorText === ".button--primary:focus-visible") as CSSStyleRule | undefined;
+    const secondaryFocusRule = rules.find((rule) => (rule as CSSStyleRule).selectorText === ".button--secondary:focus-visible") as CSSStyleRule | undefined;
+    const linkFocusRule = rules.find((rule) => (rule as CSSStyleRule).selectorText === ".button--link:focus-visible");
     expect(button).toHaveFocus();
-    expect(focusRule?.style.boxShadow).toContain("inset");
-    expect(Number.parseFloat(focusRule?.style.outline ?? "")).toBe(0);
+    expect(primaryFocusRule?.style.boxShadow).toBe("inset 0 0 0 2px var(--color-void)");
+    expect(secondaryFocusRule?.style.boxShadow).toBe("inset 0 0 0 2px var(--color-action)");
+    expect(Number.parseFloat(primaryFocusRule?.style.outline ?? "")).toBe(0);
+    expect(Number.parseFloat(secondaryFocusRule?.style.outline ?? "")).toBe(0);
+    expect(linkFocusRule).toBeUndefined();
   });
 
   it("defines the reusable global layout conventions", () => {

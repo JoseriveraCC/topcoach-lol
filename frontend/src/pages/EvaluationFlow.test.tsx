@@ -39,7 +39,9 @@ describe("evaluation flow", () => {
     await userEvent.click(screen.getByRole("tab", { name: "Evidencia" }));
 
     expect(screen.getAllByRole("listitem")).toHaveLength(10);
-    expect(screen.getByLabelText("Partida 1: 0 muertes tempranas")).toBeInTheDocument();
+    const zeroValueBar = screen.getByLabelText("Partida 1: 0 muertes tempranas");
+    expect(zeroValueBar).toHaveStyle({ height: "0%" });
+    expect(zeroValueBar).toHaveClass("evidence-bar--zero");
     expect(screen.getByLabelText("Partida 10: 2 muertes tempranas")).toBeInTheDocument();
   });
 
@@ -57,9 +59,12 @@ describe("evaluation flow", () => {
 
   it("renders summary values consistent with the ten-match evidence", async () => {
     render(<ReportPage />);
+    expect(screen.getByText("4.4")).toBeInTheDocument();
     expect(screen.getByText("60%")).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole("tab", { name: "Debilidades" }));
     expect(screen.getByText("1.4 por partida")).toBeInTheDocument();
+    expect(screen.getByText("7.4 CS/min; CV 8.0%")).toBeInTheDocument();
+    expect(screen.getByText("CV ≤ 6%")).toBeInTheDocument();
   });
 });

@@ -34,8 +34,27 @@ export function PageHeader({ eyebrow, title, description, action }: { eyebrow: s
   return <header className="page-header"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p>{description}</p></div>{action}</header>;
 }
 
-export function StatusBadge({ tone, children }: { tone: "success" | "warning" | "danger" | "neutral"; children: ReactNode }) {
+export function StatusBadge({ tone, children }: { tone: "success" | "warning" | "danger" | "neutral" | "process"; children: ReactNode }) {
   return <span className={`status status--${tone}`}>{children}</span>;
+}
+
+export function EmptyState({
+  eyebrow,
+  title,
+  description,
+  action,
+  className = "",
+  titleLevel = 2,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  action: ReactNode;
+  className?: string;
+  titleLevel?: 2 | 3;
+}) {
+  const Heading = titleLevel === 3 ? "h3" : "h2";
+  return <Panel className={`empty-state ${className}`.trim()}><p className="eyebrow">{eyebrow}</p><Heading>{title}</Heading><p>{description}</p>{action}</Panel>;
 }
 
 export function ProgressBar({ value, max, label }: { value: number; max: number; label: string }) {

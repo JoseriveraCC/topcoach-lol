@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AppShell } from "../components/AppShell";
 import { EvaluationCard } from "../components/domain";
-import { Button, PageHeader, Panel } from "../components/ui";
+import { Button, EmptyState, PageHeader, Panel } from "../components/ui";
 import { demoHistory } from "../data/demo";
 
 export function HistoryPage() {
@@ -17,12 +17,13 @@ export function HistoryPage() {
       />
 
       {showEmpty ? (
-        <Panel className="history-empty">
-          <p className="eyebrow">Estado vacío demostrativo</p>
-          <h2>Todavía no hay evaluaciones</h2>
-          <p>Completá un primer bloque de 10 partidas válidas para empezar a comparar tu progreso.</p>
-          <Button href="#/evaluacion/nueva">Crear primera evaluación</Button>
-        </Panel>
+        <EmptyState
+          className="history-empty"
+          eyebrow="Estado vacío demostrativo"
+          title="Todavía no hay evaluaciones"
+          description="Completá un primer bloque de 10 partidas válidas para empezar a comparar tu progreso."
+          action={<Button href="#/evaluacion/nueva">Crear primera evaluación</Button>}
+        />
       ) : (
         <>
           <Panel className="history-comparison" accent={false}>

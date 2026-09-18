@@ -6,7 +6,7 @@ describe("dashboard", () => {
   it("shows the demo identity, core metrics, and evaluation action", () => {
     render(<DashboardPage />);
     expect(screen.getAllByText(/TP Salchipapa/)).toHaveLength(2);
-    expect(screen.getByText("4.2")).toBeInTheDocument();
+    expect(screen.getByText("4.4")).toBeInTheDocument();
     expect(screen.getByText("60%")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Solicitar evaluación" })).toHaveAttribute("href", "#/evaluacion/nueva");
   });

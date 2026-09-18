@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { AppShell } from "../components/AppShell";
 import { MetricCard } from "../components/domain";
-import { Button, Panel, ProgressBar, StatusBadge } from "../components/ui";
+import { Button, EmptyState, Panel, ProgressBar, StatusBadge, Tabs } from "../components/ui";
 import { visualTokens } from "../data/demo";
 
 export function StyleGuidePage() {
+  const [activeGuideTab, setActiveGuideTab] = useState("Vista general");
+
   return (
     <AppShell activeRoute="/guia-visual">
       <div className="style-guide capture-frame">
@@ -63,7 +66,8 @@ export function StyleGuidePage() {
                 <StatusBadge tone="success">Completada</StatusBadge>
                 <StatusBadge tone="warning">Atención</StatusBadge>
                 <StatusBadge tone="danger">Crítico</StatusBadge>
-                <StatusBadge tone="neutral">En proceso</StatusBadge>
+                <StatusBadge tone="neutral">Neutral</StatusBadge>
+                <StatusBadge tone="process">En proceso</StatusBadge>
               </div>
               <ProgressBar value={7} max={10} label="Progreso de ejemplo" />
             </Panel>
@@ -90,6 +94,26 @@ export function StyleGuidePage() {
                 <input type="text" placeholder="Nombre #TAG" />
               </label>
             </Panel>
+          </section>
+
+          <section className="guide-section" aria-labelledby="tabs-title">
+            <Panel>
+              <p className="eyebrow">Navegación interna</p>
+              <h2 id="tabs-title">Pestañas</h2>
+              <Tabs items={["Vista general", "Detalle"]} active={activeGuideTab} onChange={setActiveGuideTab} />
+              <p className="guide-copy">Pestaña activa: {activeGuideTab}</p>
+            </Panel>
+          </section>
+
+          <section className="guide-section" aria-labelledby="empty-state-title">
+            <h2 id="empty-state-title">Estado vacío</h2>
+            <EmptyState
+              eyebrow="Sin datos todavía"
+              title="Sin evaluaciones para comparar"
+              titleLevel={3}
+              description="Completá un bloque válido para habilitar este espacio."
+              action={<Button href="#/evaluacion/nueva">Crear evaluación</Button>}
+            />
           </section>
         </div>
       </div>

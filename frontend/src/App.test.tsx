@@ -15,37 +15,37 @@ beforeEach(() => { window.location.hash = "#/"; });
 
 describe("prototype routes", () => {
   const cases = [
-    ["#/", /Jugá con intención/i],
-    ["#/login", /Volvé a tu entrenamiento/i],
-    ["#/registro", /Creá tu cuenta/i],
-    ["#/recuperar", /Restablecer contraseña/i],
-    ["#/vincular", /Vinculá tu Riot ID/i],
-    ["#/dashboard", /Tu entrenamiento, en contexto/i],
-    ["#/evaluacion/nueva", /Nueva evaluación/i],
-    ["#/evaluacion/4", /Tu siguiente mejora empieza acá/i],
-    ["#/plan", /Plan de 3 partidas/i],
-    ["#/historial", /Historial de evaluaciones/i],
-    ["#/guia-visual", /Sistema visual/i],
+    ["#/", "Jugá con intención.Mejorá con evidencia."],
+    ["#/login", "Volvé a tu entrenamiento"],
+    ["#/registro", "Creá tu cuenta"],
+    ["#/recuperar", "Restablecer contraseña"],
+    ["#/vincular", "Vinculá tu Riot ID"],
+    ["#/dashboard", "Tu entrenamiento, en contexto"],
+    ["#/evaluacion/nueva", "Nueva evaluación"],
+    ["#/evaluacion/4", "Tu siguiente mejora empieza acá"],
+    ["#/plan", "Plan de 3 partidas"],
+    ["#/historial", "Historial de evaluaciones"],
+    ["#/guia-visual", "Sistema visual"],
   ] as const;
 
   it.each(cases)("renders %s", (hash, heading) => {
     window.location.hash = hash;
     render(<App />);
-    expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: heading, level: 1 })).toBeInTheDocument();
   });
 
   it("reacts to hash navigation without remounting", () => {
     render(<App />);
     visit("#/dashboard");
-    expect(screen.getByRole("heading", { name: /Tu entrenamiento, en contexto/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Tu entrenamiento, en contexto", level: 1 })).toBeInTheDocument();
     visit("#/evaluacion/4");
-    expect(screen.getByRole("heading", { name: /Tu siguiente mejora empieza acá/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Tu siguiente mejora empieza acá", level: 1 })).toBeInTheDocument();
   });
 
   it("falls back to the landing page for unknown hashes", () => {
     window.location.hash = "#/desconocida";
     render(<App />);
-    expect(screen.getByRole("heading", { name: /Jugá con intención/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Jugá con intención.Mejorá con evidencia.", level: 1 })).toBeInTheDocument();
   });
 
   it("completes the primary click journey", async () => {

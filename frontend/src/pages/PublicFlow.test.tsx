@@ -27,6 +27,34 @@ describe("public journey", () => {
     expect(window.location.hash).toBe("#/vincular");
   });
 
+  it("requires both login fields and then opens the dashboard", async () => {
+    const user = userEvent.setup();
+    render(<AuthPage mode="login" />);
+
+    await user.click(screen.getByRole("button", { name: "Iniciar sesión" }));
+    expect(screen.getAllByRole("alert")).toHaveLength(2);
+    expect(window.location.hash).toBe("#/");
+
+    await user.type(screen.getByLabelText("Correo electrónico"), "demo@topcoach.test");
+    await user.type(screen.getByLabelText("Contraseña"), "demo-segura");
+    await user.click(screen.getByRole("button", { name: "Iniciar sesión" }));
+    expect(window.location.hash).toBe("#/dashboard");
+  });
+
+  it("requires the recovery email and then returns to login", async () => {
+    const user = userEvent.setup();
+    render(<AuthPage mode="recover" />);
+
+    expect(screen.queryByLabelText("Contraseña")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Enviar enlace demo" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("Ingresá tu correo electrónico.");
+    expect(window.location.hash).toBe("#/");
+
+    await user.type(screen.getByLabelText("Correo electrónico"), "demo@topcoach.test");
+    await user.click(screen.getByRole("button", { name: "Enviar enlace demo" }));
+    expect(window.location.hash).toBe("#/login");
+  });
+
   it("keeps registration in context when required fields are empty", async () => {
     render(<AuthPage mode="register" />);
     await userEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));

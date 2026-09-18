@@ -79,8 +79,8 @@ export function ReportPage() {
                 {demoMatches.map((match, index) => (
                   <div
                     key={match.id}
-                    className={`evidence-bar ${match.earlyDeaths >= 2 ? "evidence-bar--critical" : ""}`}
-                    style={{ height: `${Math.max(8, (match.earlyDeaths / 3) * 100)}%` }}
+                    className={`evidence-bar ${match.earlyDeaths === 0 ? "evidence-bar--zero" : match.earlyDeaths >= 2 ? "evidence-bar--critical" : ""}`}
+                    style={{ height: `${(match.earlyDeaths / 3) * 100}%` }}
                     role="img"
                     aria-label={`Partida ${index + 1}: ${match.earlyDeaths} muertes tempranas`}
                   />

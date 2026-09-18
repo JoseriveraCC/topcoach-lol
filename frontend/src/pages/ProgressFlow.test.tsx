@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { HistoryPage } from "./HistoryPage";
@@ -31,14 +31,45 @@ describe("progress journey", () => {
     expect(screen.getByRole("link", { name: "Crear primera evaluación" })).toHaveAttribute("href", "#/evaluacion/nueva");
   });
 
-  it("publishes presentation-ready color values and live components", () => {
+  it("publishes the complete visual contract with live components", async () => {
     const { container } = render(<StyleGuidePage />);
-    expect(screen.getByText("#43D8CD")).toBeInTheDocument();
-    expect(screen.getByText("#E7B761")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Sistema visual" })).toBeInTheDocument();
+    const expectedTokens = [
+      ["Vacío", "#050B0F", "Fondo principal"],
+      ["Superficie", "#0D171D", "Tarjetas y navegación"],
+      ["Superficie elevada", "#111D24", "Superficies elevadas"],
+      ["Línea", "#23343C", "Bordes y divisores"],
+      ["Texto", "#F2F7F8", "Texto principal"],
+      ["Texto secundario", "#7F9DAB", "Texto secundario"],
+      ["Acción", "#43D8CD", "Acciones, selección y progreso activo"],
+      ["Acento", "#E7B761", "Rango, logros y énfasis competitivo"],
+      ["Alerta", "#EF6156", "Alertas y métricas críticas"],
+      ["Éxito", "#55D99B", "Éxito y estado completado"],
+    ] as const;
+
+    expectedTokens.forEach(([name, value, usage]) => {
+      const swatch = screen.getByText(name, { selector: "strong" }).closest(".swatch");
+      expect(swatch).toBeInTheDocument();
+      expect(within(swatch as HTMLElement).getByText(value)).toBeInTheDocument();
+      expect(within(swatch as HTMLElement).getByText(usage, { selector: "small" })).toBeInTheDocument();
+    });
+    ["Tokens de color", "Tipografía", "Botones", "Estados", "Métricas", "Superficies", "Pestañas", "Estado vacío"].forEach((name) => {
+      expect(screen.getByRole("heading", { name, level: 2 })).toBeInTheDocument();
+    });
+    expect(screen.getByRole("heading", { name: "Sistema visual", level: 1 })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Acción primaria" })).toBeInTheDocument();
     expect(screen.getByRole("progressbar", { name: "Progreso de ejemplo" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "Riot ID de ejemplo" })).toBeInTheDocument();
+    expect(screen.getByText("Neutral")).toHaveClass("status--neutral");
+    expect(screen.getByText("En proceso")).toHaveClass("status--process");
+    expect(screen.getByText("Neutral")).not.toHaveClass("status--process");
+    expect(screen.getByRole("heading", { name: "Sin evaluaciones para comparar" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Crear evaluación" })).toHaveAttribute("href", "#/evaluacion/nueva");
+    expect(screen.getByText("Preparado para capturas 16:9")).toBeInTheDocument();
     expect(container.querySelector(".style-guide.capture-frame")).toBeInTheDocument();
+
+    const detailTab = screen.getByRole("tab", { name: "Detalle" });
+    await userEvent.click(detailTab);
+    expect(detailTab).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByText("Pestaña activa: Detalle")).toBeInTheDocument();
   });
 });
